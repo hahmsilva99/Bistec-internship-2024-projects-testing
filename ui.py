@@ -7,7 +7,7 @@ tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
 model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
 
 st.title("CV Analyzer Chatbot ")
-st.markdown("Upload 5 PDF CVs and ask questions to filter them.")
+st.markdown("Upload PDF CVs and ask questions to filter them.")
 
 st.sidebar.header("Upload CVs")
 uploaded_files = st.sidebar.file_uploader("Upload up to 5 PDF CVs", type="pdf", accept_multiple_files=True)
@@ -102,7 +102,7 @@ if found_candidates:
             bot_response = generate_response(specific_query)
         
         # Add bot response to chat history
-        st.session_state.chat_history.append(f"You: {specific_query}")
+        #st.session_state.chat_history.append(f"You: {specific_query}")
         st.session_state.chat_history.append(f"Bot: {bot_response}")
 
 # Reset chat button (optional)
