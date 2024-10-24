@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 import os
@@ -16,7 +15,7 @@ def save_uploaded_file(uploaded_file):
     
     return file_path
 
-
+# Custom CSS to remove padding, adjust font size, and reduce spaces
 st.markdown(
     """
     <style>
@@ -35,6 +34,29 @@ st.markdown(
             padding: 10px;
             margin-bottom: 10px;
             text-align: right;
+        }
+        /* Remove padding for sidebar elements */
+        .css-1d391kg {
+            padding: 0;
+        }
+        /* Adjust the font size for section titles */
+        .css-1d391kg h1 {
+            font-size: 16px !important; /* Smaller font size */
+        }
+        /* Reduce spaces between sections */
+        .css-1n543e5, .css-1l5gwpq {
+            margin-bottom: 5px !important; /* Reduce bottom margin */
+            margin-top: 5px !important;    /* Reduce top margin */
+        }
+        /* Remove extra margin between sections */
+        .css-1inwz65 {
+            margin-top: 5px !important;   /* Reduce margin between Submit and Ask sections */
+            margin-bottom: 5px !important;
+        }
+        /* Adjust the sidebar height to remove scrolling */
+        .css-1d391kg {
+            height: auto !important; /* Disable fixed height */
+            overflow: hidden !important; /* Remove scrolling */
         }
     </style>
     """,
@@ -55,7 +77,7 @@ st.title("CV Analysis Chatbot - Phase_01")
 
 # Sidebar for CV upload----------------------------------------------------
 with st.sidebar:
-    st.write("# Upload Your CV")
+    st.write("# Upload Your CV")  # The header font size is adjusted by the CSS above
     uploaded_file = st.file_uploader("Upload CV (PDF)", type=["pdf"], label_visibility="collapsed")
 
     if st.button("Submit CV"):
@@ -67,7 +89,7 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
 
     # Form for prompt input
-    st.write("# Ask a Question")
+    st.write("# Ask a Question")  # The header font size is adjusted by the CSS above
     with st.form(key='question_form'):
         prompt = st.text_area("Ask your questions here:", placeholder="Enter your question....", key="prompt")
         submit_button = st.form_submit_button(label="Ask")
@@ -75,10 +97,9 @@ with st.sidebar:
     if st.button("Clear Chat"):
         st.session_state.messages = []
 
-
 st.write("### Chatbot Responses:")
 
-# Handle form submission-------------------------------------------------------------
+# Handle form submission---------------------------------------------------
 if submit_button and prompt:
     if 'file_path' in st.session_state:  
         file_path = st.session_state.file_path
