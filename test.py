@@ -59,7 +59,7 @@ with st.sidebar:
     st.write("# Upload Your CVs")
     
     # Allow multiple file uploads
-    uploaded_files = st.file_uploader("Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="collapsed")
+    uploaded_files = st.file_uploader("Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="hidden")
 
     # Submit button
     if st.button("Submit CVs"):
