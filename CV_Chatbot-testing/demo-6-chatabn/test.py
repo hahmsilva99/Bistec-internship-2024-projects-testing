@@ -36,6 +36,19 @@ st.markdown(
             margin-bottom: 10px;
             text-align: right;
         }
+        .sidebar-upload-section {
+            background-color: #d1e7dd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            margin-top:0px;
+        }
+        .sidebar-question-section {
+            background-color: #d9ecf2;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
     </style>
     """,
     unsafe_allow_html=True
@@ -56,10 +69,10 @@ st.title("CV Analysis Chatbot - Phase_01")
 # Sidebar for CV upload----------------------------------------------------
 # Sidebar for CV uploads
 with st.sidebar:
-    st.write("# Upload Your CVs")
+    st.write("#### Upload Your CVs")
     
     # Allow multiple file uploads
-    uploaded_files = st.file_uploader("Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="hidden")
+    uploaded_files = st.file_uploader(" ####Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="collapsed")
 
     # Submit button
     if st.button("Submit CVs"):
@@ -81,7 +94,7 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
 
     # Form for prompt input
-    st.write("# Ask a Question")
+    st.write("##### Ask a Question")
     with st.form(key='question_form'):
         prompt = st.text_area("Ask your questions here:", placeholder="Enter your question....", key="prompt")
         submit_button = st.form_submit_button(label="Ask")
