@@ -15,10 +15,11 @@ def save_uploaded_file(uploaded_file):
     
     return file_path
 
-# Inject custom CSS to remove the horizontal line and style other sections
+
 st.markdown(
     """
     <style>
+        /* Message styling */
         .user-message {
             background-color: #faeabe;
             color: black;
@@ -27,7 +28,6 @@ st.markdown(
             margin-bottom: 10px;
             text-align: left;
         }
-
         .bot-message {
             background-color: #fffaed;
             color: black;
@@ -36,36 +36,30 @@ st.markdown(
             margin-bottom: 10px;
             text-align: right;
         }
-
-        .sidebar-question-section {
-            background-color: #d9ecf2;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        /* Remove horizontal lines (hr) from the sidebar */
-        .css-1aumxhk hr {
-            display: none;
-        }
-
         
-
-        /* Responsive text styling for different screen sizes */
-        @media (max-width: 600px) {
-            .sidebar h4 {
+        /* Responsive button styling */
+        .responsive-button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        /* Medium screens */
+        @media (min-width: 768px) {
+            .responsive-button {
+                padding: 12px;
                 font-size: 18px;
             }
         }
-
-        @media (min-width: 601px) and (max-width: 1024px) {
-            .sidebar h4 {
-                font-size: 22px;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .sidebar h4 {
-                font-size: 26px;
+        
+        /* Large screens */
+        @media (min-width: 992px) {
+            .responsive-button {
+                padding: 14px;
+                font-size: 20px;
+                width: 90%;
             }
         }
     </style>
@@ -87,21 +81,22 @@ st.title("CV Analysis Chatbot - Phase_01")
 
 # Sidebar for CV upload
 with st.sidebar:
-    st.markdown('<div class="sidebar-question-section"><h4>Upload Your CVs</h4></div>', unsafe_allow_html=True)
-
+    st.write("#### Upload Your CVs", key="upload")
+    
     # Allow multiple file uploads
-    uploaded_files = st.file_uploader(
-        "Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="collapsed", key="upfile"
-    )
+    uploaded_files = st.file_uploader("#### Upload CVs (PDF)", type=["pdf"], accept_multiple_files=True, label_visibility="collapsed", key="upfile")
 
     # Submit button
     if st.button("Submit CVs", key="sub"):
         if uploaded_files:
             file_paths = []
+            
+            # Process each uploaded file
             for uploaded_file in uploaded_files:
                 file_path = save_uploaded_file(uploaded_file)
                 file_paths.append(file_path)
             
+            # Save all file paths to session state
             st.session_state.file_paths = file_paths
             st.success("All CVs submitted successfully!")
         else:
@@ -110,22 +105,28 @@ with st.sidebar:
 # Main Section for Chatbot Responses and Question Input
 st.write("### Chatbot Responses:")
 
+# Display chat history
 if st.session_state.messages:
     for message in st.session_state.messages:
-        st.markdown(message, unsafe_allow_html=True)
+        st.markdown(message, unsafe_allow_html=True)  
 
-# Form for question input
+# Form for question input in the main section
 st.write("### Ask a Question")
 with st.form(key='question_form'):
-    prompt = st.text_area("Ask your questions here:", placeholder="Enter your question....", key="prompt")
-    submit_button = st.form_submit_button(label="Ask")
+    prompt = st.text_area(label=" ", placeholder="Enter your question....", key="prompt")
+    
+    # Arrange Ask and Clear Chat buttons side by side
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        submit_button = st.form_submit_button(label="Ask", use_container_width=True)
+    with col2:
+        clear_chat_button = st.form_submit_button(label="Clear Chat", on_click=lambda: st.session_state.messages.clear(), use_container_width=True)
 
+# Handle form submission
 if submit_button and prompt:
-    if 'file_paths' in st.session_state:
+    if 'file_paths' in st.session_state:  
         file_paths = st.session_state.file_paths
-        response = requests.post(
-            "http://127.0.0.1:8000/api/data_handle", json={"file_paths": file_paths, "prompt": prompt}
-        )
+        response = requests.post("http://127.0.0.1:8000/api/data_handle", json={"file_paths": file_paths, "prompt": prompt})
 
         if response.status_code == 200:
             data = response.json()
@@ -137,7 +138,3 @@ if submit_button and prompt:
             st.error("Error fetching response from backend.")
     else:
         st.warning("Please upload a CV before asking questions.")
-
-# Clear Chat button
-if st.button("Clear Chat"):
-    st.session_state.messages = []
