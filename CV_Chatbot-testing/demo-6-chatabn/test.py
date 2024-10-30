@@ -19,7 +19,7 @@ def save_uploaded_file(uploaded_file):
 st.markdown(
     """
     <style>
-        /* Message styling */
+        /* Chat message styling */
         .user-message {
             background-color: #faeabe;
             color: black;
@@ -37,32 +37,18 @@ st.markdown(
             text-align: right;
         }
         
-        
-        
-        /* Responsive button styling */
-        .responsive-button {
+        /* Fixed position for input form at the bottom */
+        .chat-input {
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-top: 5px;
+            background-color: #333;
+            padding: 5px;
+            z-index: 999;
         }
-        
-        /* Medium screens */
-        @media (min-width: 768px) {
-            .responsive-button {
-                padding: 12px;
-                font-size: 18px;
-            }
-        }
-        
-        /* Large screens */
-        @media (min-width: 992px) {
-            .responsive-button {
-                padding: 14px;
-                font-size: 20px;
-                width: 90%;
-            }
+        /* Main container padding to prevent overlap with input form */
+        .main-container {
+            padding-bottom: 250px; /* Adjust based on the height of the input form */
         }
     </style>
     """,
@@ -104,25 +90,31 @@ with st.sidebar:
         else:
             st.warning("Please upload at least one CV.")
 
-# Main Section for Chatbot Responses and Question Input
+# Main Section for Chatbot Responses
 st.write("### Chatbot Responses:")
+st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 
 # Display chat history
 if st.session_state.messages:
     for message in st.session_state.messages:
-        st.markdown(message, unsafe_allow_html=True)  
+        st.markdown(message, unsafe_allow_html=True)
 
-# Form for question input in the main section
-#st.write("### Ask a Question")
+# Closing the main container div
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Form for question input at the bottom
 with st.form(key='question_form'):
-    prompt = st.text_input(label="Ask your question here : ", placeholder="Enter your question....", key="prompt")
+    st.markdown("<div class='chat-input'>", unsafe_allow_html=True)
+    prompt = st.text_input(label="", placeholder="Enter your question....", key="prompt")
     
     # Arrange Ask and Clear Chat buttons side by side
     col1, col2 = st.columns([1, 1])
     with col1:
-        submit_button = st.form_submit_button(label="Ask", use_container_width=True)
-    with col2:
         clear_chat_button = st.form_submit_button(label="Clear Chat", on_click=lambda: st.session_state.messages.clear(), use_container_width=True)
+    with col2:
+        submit_button = st.form_submit_button(label="Ask", use_container_width=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Handle form submission
 if submit_button and prompt:
