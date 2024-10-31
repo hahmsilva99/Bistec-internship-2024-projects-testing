@@ -41,23 +41,34 @@ st.markdown(
         .chat-input {
             position: fixed;
             bottom: 0;
-            width: 200%; /* Adjusted this value to increase the form width */
-            max-width: 1200px; /* Optional: sets a maximum width to avoid it stretching too much on larger screens */
+            width: 200%;
+            max-width: 1200px;
             background-color: #333;
-            padding: 10px; /* Increased padding for a more spacious look */
-            margin: 0 auto; /* Center-align the form section */
+            padding: 10px;
+            margin: 0 auto;
             z-index: 999;
         }
         
         /* Increase the width of the input field */
         .chat-input input[type="text"] {
-            width: 85%; /* Adjusted input field width */
-            margin-right: 10px; /* Add space between input field and buttons */
+            width: 85%;
+            margin-right: 10px;
         }
         
         /* Main container padding to prevent overlap with input form */
         .main-container {
-            padding-bottom: 260px; /* Adjust based on the height of the input form */
+            padding-bottom: 260px;
+        }
+
+        /* Sidebar Responsiveness */
+        @media (max-width: 768px) {
+            .css-1lcbmhc.e1fqkh3o1 { /* Class for Streamlit's sidebar */
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .css-1lcbmhc.e1fqkh3o1:hover {
+                transform: translateX(0);
+            }
         }
     </style>
     """,

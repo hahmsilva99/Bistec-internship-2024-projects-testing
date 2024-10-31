@@ -17,7 +17,7 @@ def save_uploaded_file(uploaded_file):
 
 
 st.markdown(
-    """
+     """
     <style>
         /* Chat message styling */
         .user-message {
@@ -41,14 +41,23 @@ st.markdown(
         .chat-input {
             position: fixed;
             bottom: 0;
-            width: 100%;
+            width: 200%; /* Adjusted this value to increase the form width */
+            max-width: 1200px; /* Optional: sets a maximum width to avoid it stretching too much on larger screens */
             background-color: #333;
-            padding: 5px;
+            padding: 10px; /* Increased padding for a more spacious look */
+            margin: 0 auto; /* Center-align the form section */
             z-index: 999;
         }
+        
+        /* Increase the width of the input field */
+        .chat-input input[type="text"] {
+            width: 85%; /* Adjusted input field width */
+            margin-right: 10px; /* Add space between input field and buttons */
+        }
+        
         /* Main container padding to prevent overlap with input form */
         .main-container {
-            padding-bottom: 250px; /* Adjust based on the height of the input form */
+            padding-bottom: 260px; /* Adjust based on the height of the input form */
         }
     </style>
     """,
