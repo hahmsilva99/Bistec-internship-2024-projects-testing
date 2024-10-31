@@ -75,7 +75,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Initialize session state
+# Initialize session state for messages and chat history
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
@@ -137,17 +137,24 @@ with st.form(key='question_form'):
     st.markdown("</div>", unsafe_allow_html=True)
 
 # Handle form submission
-
 if submit_button and prompt:
     if 'file_paths' in st.session_state:  
         file_paths = st.session_state.file_paths
-        response = requests.post("http://127.0.0.1:8000/api/data_handle", json={"file_paths": file_paths, "prompt": prompt})
-        
+
+        # Send entire chat history with the new prompt
+        chat_history = [{"role": "user" if i % 2 == 0 else "bot", "message": msg} for i, msg in enumerate(st.session_state.messages)]
+        chat_history.append({"role": "user", "message": prompt})
+
+        response = requests.post("http://127.0.0.1:8000/api/data_handle", json={"file_paths": file_paths, "chat_history": chat_history})
+
         if response.status_code == 200:
             data = response.json()
             chatbot_response = data['message']
-            
+
+            # Add user prompt and bot response to the chat history
             st.session_state.messages.append(display_message(prompt, is_user=True))
             st.session_state.messages.append(display_message(chatbot_response, is_user=False))
         else:
             st.error("Error fetching response from backend.")
+    else:
+        st.warning("Please upload a CV before asking questions.")
