@@ -70,6 +70,26 @@ st.markdown(
                 transform: translateX(0);
             }
         }
+        .chat-input {
+    position: fixed;
+    bottom: 0;
+    width: 160%;  /* Changed from 200% */
+    max-width: 1600px;  /* Increased from 1200px */
+    background-color: #333;
+    padding: 20px;  /* Increased padding */
+    margin: 0 auto;
+    z-index: 999;
+    left: 50%;
+    transform: translateX(-50%);  /* Center the chat input */
+}
+
+.chat-input input[type="text"] {
+    width: 150%;  /* Increased from 85% */
+    margin-right: 10px;
+    padding: 12px;  /* Added padding */
+    border-radius: 8px;  /* Added rounded corners */
+}
+
     </style>
     """,
     unsafe_allow_html=True
